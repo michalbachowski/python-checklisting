@@ -57,3 +57,6 @@ def main():
         runner = WebRunner()
     ChecklistInterface(runner, args.config).run()
 
+if '__main__' == __name__:
+    main()
+

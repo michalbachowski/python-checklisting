@@ -38,7 +38,7 @@ setup(
     package_dir={'': 'src'},
     py_modules=[splitext(basename(path))[0] for path in glob('src/*.py')],
     include_package_data=True,
-    zip_safe=False,
+    zip_safe=True,
     classifiers=[
         # complete classifier list: http://pypi.python.org/pypi?%3Aaction=list_classifiers
         'Development Status :: 5 - Production/Stable',
@@ -61,17 +61,13 @@ setup(
         # 'Programming Language :: Python :: Implementation :: Stackless',
         'Topic :: Utilities',
     ],
-    keywords=[
-        # eg: 'keyword1', 'keyword2', 'keyword3',
-    ],
     install_requires=[
         # eg: 'aspectlib==1.1.1', 'six>=1.7',
+        'aiohttp==3.3.2',
+        'pyyaml==3.11',
+        'logging_utils==0.0.1',
+        'PySimplePluginsDiscovery==0.1.0',
     ],
-    extras_require={
-        # eg:
-        #   'rst': ['docutils>=0.11'],
-        #   ':python_version=="2.6"': ['argparse'],
-    },
     entry_points={
         'console_scripts': [
             'checklisting = checklisting.cli:main',

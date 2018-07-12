@@ -1,0 +1,4 @@
+aiohttp
+pyyaml==3.11
+git+https://github.com/michalbachowski/pylogging_utils.git#egg=pylogging_utils==0.0.1
+git+https://github.com/michalbachowski/pyspd.git#egg=pyspd==0.1.0
