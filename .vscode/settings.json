@@ -1,0 +1,29 @@
+{
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": true
+    },
+    "python.unitTest.pyTestArgs": [
+        "--no-cov",
+        "--env=fixtures_dir:${workspaceFolder}/tests/fixtures/",
+        "${workspaceFolder}/tests"
+    ],
+    "python.pythonPath": "~/.virtualenvs/python-checklisting/bin/python",
+    "python.linting.flake8Enabled": true,
+    "python.linting.pylintEnabled": false,
+    "python.linting.lintOnSave": true,
+    "editor.formatOnSave": true,
+    "python.formatting.provider": "yapf",
+    "python.formatting.yapfArgs": [
+        "--style",
+        "${workspaceRoot}/.style.yapf"
+    ],
+    "python.unitTest.cwd": "${workspaceRoot}",
+    "python.unitTest.pyTestEnabled": true,
+    "files.exclude": {
+        "**/__pycache__": true,
+        "**/*.pyc": true,
+        ".tox": true,
+        ".pytest_cache": true,
+        ".coverage.*": true
+    }
+}
