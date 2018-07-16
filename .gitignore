@@ -57,12 +57,15 @@ docs/_build
 .*.sw[po]
 .build
 .ve
-.env
 .cache
 .pytest
 .bootstrap
 .appveyor.token
 *.bak
 
+# Get rid of zipapp artifacts
 /src/*
 !/src/checklisting
+
+# IDE
+.history

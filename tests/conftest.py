@@ -18,3 +18,4 @@ def pytest_configure(config):
     for env in envs:
         (name, value) = str(env).split(':')
         os.environ[name.upper()] = value
+
