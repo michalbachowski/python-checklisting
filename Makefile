@@ -1,5 +1,3 @@
-
-
 clean:
 	rm -rf build
 	rm -rf .coverage\.*
