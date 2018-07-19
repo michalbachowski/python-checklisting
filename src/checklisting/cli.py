@@ -2,11 +2,11 @@ import argparse
 import logging
 import sys
 from pathlib import PurePath
-from typing import Optional
+from typing import Any, Dict, Optional
 
-from checklisting.interfaces.common.loaders import BaseChecklistsLoader, BaseConfigurationLoader
+from checklisting.configuration.provider import BaseConfigurationProvider, FileBasedConfigurationProvider
+from checklisting.interfaces.common.loaders import BaseChecklistsLoader
 from checklisting.interfaces.common.loaders.pyspd import PySPDChecklistsLoader
-from checklisting.interfaces.common.loaders.configuration import YamlConfigurationLoader
 from checklisting.interfaces.common.runners import BaseInterfaceRunner
 from checklisting.interfaces.common.runners.cli import CliRunner
 from checklisting.interfaces.common.runners.web import WebRunner
@@ -16,14 +16,12 @@ class ChecklistInterface(object):
 
     def __init__(self,
                  runner: BaseInterfaceRunner,
-                 configuration_path: PurePath,
-                 configuration_loader: Optional[BaseConfigurationLoader] = None,
+                 configuration_provider: BaseConfigurationProvider[Dict[str, Any]],
                  checklists_loader: Optional[BaseChecklistsLoader] = None) -> None:
         self._runner = runner
-        self._configuration_loader = configuration_loader or YamlConfigurationLoader()
         self._checklists_loader = checklists_loader or PySPDChecklistsLoader()
         self._logger = logging.getLogger('checklisting.interfaces')
-        self._configuration = self._configuration_loader.load_configuration(configuration_path)
+        self._configuration = configuration_provider.provide_configuration()
         self._checklists = self._checklists_loader.load_checklists(self._configuration)
         self._logger = self._setup_logger(self._configuration.get('debug', False))
 
@@ -55,5 +53,4 @@ def main():
         runner = CliRunner()
     else:
         runner = WebRunner()
-    ChecklistInterface(runner, args.config).run()
-
+    ChecklistInterface(runner, FileBasedConfigurationProvider(args.config)).run()
