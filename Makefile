@@ -12,4 +12,10 @@ zipapp:
 sdist:
 	python setup.py clean --all sdist bdist_wheel
 
-.PHONY: clean zipapp sdist
+webserver:
+	PYTHONPATH=src/:$(PYTHONPATH) python3 -mchecklisting webserver tests/fixtures/sample_checklists/simple_config.yml
+
+cli:
+	PYTHONPATH=src/:$(PYTHONPATH) python3 -mchecklisting cli tests/fixtures/sample_checklists/simple_config.yml
+
+.PHONY: clean zipapp sdist cli server server
