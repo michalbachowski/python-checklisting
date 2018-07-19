@@ -1,7 +1,6 @@
 {
     "python.unitTest.pyTestArgs": [
         "--no-cov",
-        "--env=fixtures_dir:${workspaceFolder}/tests/fixtures/",
         "${workspaceFolder}/tests"
     ],
     "python.pythonPath": "~/.virtualenvs/python-checklisting/bin/python",
