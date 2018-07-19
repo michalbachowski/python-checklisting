@@ -1,7 +1,4 @@
 {
-    "editor.codeActionsOnSave": {
-        "source.organizeImports": true
-    },
     "python.unitTest.pyTestArgs": [
         "--no-cov",
         "--env=fixtures_dir:${workspaceFolder}/tests/fixtures/",
@@ -11,7 +8,6 @@
     "python.linting.flake8Enabled": true,
     "python.linting.pylintEnabled": false,
     "python.linting.lintOnSave": true,
-    "editor.formatOnSave": true,
     "python.formatting.provider": "yapf",
     "python.formatting.yapfArgs": [
         "--style",
