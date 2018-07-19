@@ -2,7 +2,7 @@ clean:
 	rm -rf build
 	rm -rf .coverage\.*
 	rm -rf .pytest_cache
-	find . -name __pycache__ -exec rm -rf {} \;
+	find . -name __pycache__i -o -name '*.pyc' -depth -exec rm -rf {} \;
 	find ./src -not -name checklisting -maxdepth 1 -mindepth 1 -exec rm -rf {} \;
 
 zipapp:
