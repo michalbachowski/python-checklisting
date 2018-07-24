@@ -7,9 +7,9 @@ from typing import Any, Dict, Optional
 from checklisting.configuration.provider import BaseConfigurationProvider, FileBasedConfigurationProvider
 from checklisting.interfaces.common.loaders import BaseChecklistsLoader
 from checklisting.interfaces.common.loaders.pyspd import PySPDChecklistsLoader
-from checklisting.interfaces.common.runners import BaseRunner
-from checklisting.interfaces.common.runners.cli import CliRunner
-from checklisting.interfaces.common.runners.web import WebRunner
+from checklisting.runner import BaseRunner
+from checklisting.runner.cli import CliRunner
+from checklisting.runner.web import WebRunner
 
 
 class ChecklistInterface(object):

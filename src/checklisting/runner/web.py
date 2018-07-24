@@ -1,6 +1,6 @@
 import asyncio
 from logging import Logger
-from typing import Any, Dict, Iterable, Optional
+from typing import Any, Dict, Optional
 
 from aiohttp import web
 
