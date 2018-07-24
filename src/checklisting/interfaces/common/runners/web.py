@@ -5,22 +5,23 @@ from typing import Any, Dict, Iterable, Optional
 from aiohttp import web
 
 from checklisting.output.logging import LoggingOutputWriter
+from checklisting.provider import BaseChecklistsProvider
 from checklisting.serializer import BaseSerializer
 from checklisting.serializer.json import JsonSerializer
-from checklisting.task import Checklist
 
 from . import BaseRunner
 
 
 class ChecklistHttpHandler(object):
 
-    def __init__(self, checklists: Iterable[Checklist], serializer: Optional[BaseSerializer] = None) -> None:
-        self._checklists = checklists
+    def __init__(self, checklist_provider: BaseChecklistsProvider,
+                 serializer: Optional[BaseSerializer] = None) -> None:
+        self._checklist_provider = checklist_provider
         self._serializer = serializer or JsonSerializer()
         self._logging_writer = LoggingOutputWriter()
 
     async def __call__(self, request: web.Request) -> web.Response:
-        checklists_results = await asyncio.gather(*[c.execute() for c in self._checklists])
+        checklists_results = await asyncio.gather(*[c.execute() for c in self._checklist_provider.get_all()])
 
         for checklist_results in checklists_results:
             self._logging_writer.write(checklist_results)
@@ -35,9 +36,9 @@ def _get_host_and_port(configuration: Dict[str, Any]):
 
 class WebRunner(BaseRunner):
 
-    def run(self, configuration: Dict[str, Any], checklists: Iterable[Checklist], logger: Logger):
+    def run(self, configuration: Dict[str, Any], checklist_provider: BaseChecklistsProvider, logger: Logger):
         (addr, port) = _get_host_and_port(configuration)
-        handler = ChecklistHttpHandler(checklists)
+        handler = ChecklistHttpHandler(checklist_provider)
         app = web.Application()
         app.router.add_route('GET', '/', handler)
 

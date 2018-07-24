@@ -1,12 +1,12 @@
 from abc import ABC, abstractmethod
 from logging import Logger
-from typing import Any, Dict, Iterable
+from typing import Any, Dict
 
-from checklisting.task import Checklist
+from checklisting.provider import BaseChecklistsProvider
 
 
 class BaseRunner(ABC):
 
     @abstractmethod
-    def run(self, configuration: Dict[str, Any], checklists: Iterable[Checklist], logger: Logger) -> None:
+    def run(self, configuration: Dict[str, Any], checklists_provider: BaseChecklistsProvider, logger: Logger) -> None:
         pass

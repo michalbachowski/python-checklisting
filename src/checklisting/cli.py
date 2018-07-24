@@ -22,7 +22,7 @@ class ChecklistInterface(object):
         self._checklists_loader = checklists_loader or PySPDChecklistsLoader()
         self._logger = logging.getLogger('checklisting.interfaces')
         self._configuration = configuration_provider.provide_configuration()
-        self._checklists = self._checklists_loader.load_checklists(self._configuration)
+        self._checklist_provider = self._checklists_loader.load_checklists(self._configuration)
         self._logger = self._setup_logger(self._configuration.get('debug', False))
 
     def _setup_logger(self, is_debug: bool) -> logging.Logger:
@@ -37,7 +37,7 @@ class ChecklistInterface(object):
         return logger
 
     def run(self) -> None:
-        self._runner.run(self._configuration, self._checklists, self._logger)
+        self._runner.run(self._configuration, self._checklist_provider, self._logger)
 
 
 def _get_parser() -> argparse.ArgumentParser:
