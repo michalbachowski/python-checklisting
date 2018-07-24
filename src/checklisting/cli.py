@@ -7,7 +7,7 @@ from typing import Any, Dict, Optional
 from checklisting.configuration.provider import BaseConfigurationProvider, FileBasedConfigurationProvider
 from checklisting.interfaces.common.loaders import BaseChecklistsLoader
 from checklisting.interfaces.common.loaders.pyspd import PySPDChecklistsLoader
-from checklisting.interfaces.common.runners import BaseInterfaceRunner
+from checklisting.interfaces.common.runners import BaseRunner
 from checklisting.interfaces.common.runners.cli import CliRunner
 from checklisting.interfaces.common.runners.web import WebRunner
 
@@ -15,7 +15,7 @@ from checklisting.interfaces.common.runners.web import WebRunner
 class ChecklistInterface(object):
 
     def __init__(self,
-                 runner: BaseInterfaceRunner,
+                 runner: BaseRunner,
                  configuration_provider: BaseConfigurationProvider[Dict[str, Any]],
                  checklists_loader: Optional[BaseChecklistsLoader] = None) -> None:
         self._runner = runner

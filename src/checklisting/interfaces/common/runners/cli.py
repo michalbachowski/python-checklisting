@@ -2,12 +2,13 @@ import asyncio
 from logging import Logger
 from typing import Any, Dict, Iterable
 
-from . import BaseInterfaceRunner
 from checklisting.output.logging import LoggingOutputWriter
 from checklisting.task import Checklist
 
+from . import BaseRunner
 
-class CliRunner(BaseInterfaceRunner):
+
+class CliRunner(BaseRunner):
 
     def __init__(self) -> None:
         super().__init__()

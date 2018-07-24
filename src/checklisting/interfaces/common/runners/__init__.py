@@ -5,7 +5,7 @@ from typing import Any, Dict, Iterable
 from checklisting.task import Checklist
 
 
-class BaseInterfaceRunner(ABC):
+class BaseRunner(ABC):
 
     @abstractmethod
     def run(self, configuration: Dict[str, Any], checklists: Iterable[Checklist], logger: Logger) -> None:

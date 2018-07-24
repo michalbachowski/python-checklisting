@@ -4,11 +4,12 @@ from typing import Any, Dict, Iterable, Optional
 
 from aiohttp import web
 
-from . import BaseInterfaceRunner
 from checklisting.output.logging import LoggingOutputWriter
 from checklisting.serializer import BaseSerializer
 from checklisting.serializer.json import JsonSerializer
 from checklisting.task import Checklist
+
+from . import BaseRunner
 
 
 class ChecklistHttpHandler(object):
@@ -32,7 +33,7 @@ def _get_host_and_port(configuration: Dict[str, Any]):
     return (conf.get('host', '127.0.0.1'), conf.get('port', 8080))
 
 
-class WebRunner(BaseInterfaceRunner):
+class WebRunner(BaseRunner):
 
     def run(self, configuration: Dict[str, Any], checklists: Iterable[Checklist], logger: Logger):
         (addr, port) = _get_host_and_port(configuration)
