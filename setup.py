@@ -62,12 +62,13 @@ setup(
         'Topic :: Utilities',
     ],
     install_requires=[
-        # eg: 'aspectlib==1.1.1', 'six>=1.7',
-        'aiohttp==3.3.2',
         'pyyaml==3.11',
         'logging_utils==0.0.1',
         'PySimplePluginsDiscovery==0.1.0',
     ],
+    extras_require={
+        'web': ['aiohttp==3.3.2'],
+    },
     entry_points={
         'console_scripts': [
             'checklisting = checklisting.cli:main',

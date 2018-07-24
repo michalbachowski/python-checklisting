@@ -1,0 +1,22 @@
+from logging import Logger
+from typing import Any, Dict, Optional
+
+from checklisting.provider import BaseChecklistsProvider
+from checklisting.serializer import BaseSerializer
+
+from .. import BaseRunner
+
+ERROR_MESSAGE = 'Please install [web] extras: pip install checklisting[web]'
+
+
+class ChecklistHttpHandler(object):
+
+    def __init__(self, checklist_provider: BaseChecklistsProvider,
+                 serializer: Optional[BaseSerializer] = None) -> None:
+        raise RuntimeError(ERROR_MESSAGE)
+
+
+class WebRunner(BaseRunner):
+
+    def run(self, configuration: Dict[str, Any], checklist_provider: BaseChecklistsProvider, logger: Logger):
+        raise RuntimeError(ERROR_MESSAGE)

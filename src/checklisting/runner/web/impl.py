@@ -9,7 +9,7 @@ from checklisting.provider import BaseChecklistsProvider
 from checklisting.serializer import BaseSerializer
 from checklisting.serializer.json import JsonSerializer
 
-from . import BaseRunner
+from .. import BaseRunner
 
 
 class ChecklistHttpHandler(object):
