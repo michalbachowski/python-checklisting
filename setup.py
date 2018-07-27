@@ -1,25 +1,17 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
-from __future__ import absolute_import
-from __future__ import print_function
+from __future__ import absolute_import, print_function
 
 import io
 import re
 from glob import glob
-from os.path import basename
-from os.path import dirname
-from os.path import join
-from os.path import splitext
+from os.path import basename, dirname, join, splitext
 
-from setuptools import find_packages
-from setuptools import setup
+from setuptools import find_packages, setup
 
 
 def read(*names, **kwargs):
-    return io.open(
-        join(dirname(__file__), *names),
-        encoding=kwargs.get('encoding', 'utf8')
-    ).read()
+    return io.open(join(dirname(__file__), *names), encoding=kwargs.get('encoding', 'utf8')).read()
 
 
 setup(
@@ -27,10 +19,8 @@ setup(
     version='0.1.0',
     license='MIT license',
     description='Service checklisting made easy and automated',
-    long_description='%s\n%s' % (
-        re.compile('^.. start-badges.*^.. end-badges', re.M | re.S).sub('', read('README.rst')),
-        re.sub(':[a-z]+:`~?(.*?)`', r'``\1``', read('CHANGELOG.rst'))
-    ),
+    long_description='%s\n%s' % (re.compile('^.. start-badges.*^.. end-badges', re.M | re.S).sub(
+        '', read('README.rst')), re.sub(':[a-z]+:`~?(.*?)`', r'``\1``', read('CHANGELOG.rst'))),
     author='Micha\u0142 Bachowski',
     author_email='michal@bachowski.pl',
     url='https://github.com/michalbachowski/python-checklisting',
@@ -67,11 +57,13 @@ setup(
         'PySimplePluginsDiscovery==0.1.0',
     ],
     extras_require={
-        'web': ['aiohttp==3.3.2'],
+        'web': [
+            'aiohttp==3.3.2',
+        ],
     },
     entry_points={
         'console_scripts': [
             'checklisting = checklisting.cli:main',
-        ]
+        ],
     },
 )
