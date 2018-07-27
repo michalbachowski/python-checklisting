@@ -53,7 +53,6 @@ setup(
     ],
     install_requires=[
         'pyyaml==3.11',
-        'logging_utils==0.0.1',
         'PySimplePluginsDiscovery==0.1.0',
     ],
     extras_require={
