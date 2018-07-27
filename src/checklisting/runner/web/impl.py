@@ -1,6 +1,6 @@
 import asyncio
-from logging import Logger
-from typing import Any, Dict, Optional
+from logging import getLogger
+from typing import Optional
 
 from aiohttp import web
 
@@ -10,6 +10,8 @@ from checklisting.serializer import BaseSerializer
 from checklisting.serializer.json import JsonSerializer
 
 from .. import BaseRunner
+
+_logger = getLogger('checklisting.runner.web')
 
 
 class ChecklistHttpHandler(object):
@@ -29,25 +31,24 @@ class ChecklistHttpHandler(object):
         return web.Response(body=self._serializer.dumps(checklist_results), content_type='application/json')
 
 
-def _get_host_and_port(configuration: Dict[str, Any]):
-    conf = configuration.get('web', {}).get('server', {})
-    return (conf.get('host', '127.0.0.1'), conf.get('port', 8080))
-
-
 class WebRunner(BaseRunner):
 
-    def run(self, configuration: Dict[str, Any], checklist_provider: BaseChecklistsProvider, logger: Logger):
-        (addr, port) = _get_host_and_port(configuration)
-        handler = ChecklistHttpHandler(checklist_provider)
+    def __init__(self, addr: str, port: int) -> None:
+        super().__init__()
+        self._addr = addr
+        self._port = port
+
+    def run(self, checklists_provider: BaseChecklistsProvider) -> None:
+        handler = ChecklistHttpHandler(checklists_provider)
         app = web.Application()
         app.router.add_route('GET', '/', handler)
 
         loop = asyncio.get_event_loop()
-        future = loop.create_server(app.make_handler(), addr, port)
+        future = loop.create_server(app.make_handler(), self._addr, self._port)
         srv = loop.run_until_complete(future)
-        logger.info('serving on [%s]', srv.sockets[0].getsockname())
+        _logger.info('serving on [%s]', srv.sockets[0].getsockname())
         try:
             loop.run_forever()
         except KeyboardInterrupt:
-            logger.info('shutting down')
+            _logger.info('shutting down')
             pass

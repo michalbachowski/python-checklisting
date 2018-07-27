@@ -1,5 +1,4 @@
-from logging import Logger
-from typing import Any, Dict, Optional
+from typing import Optional
 
 from checklisting.provider import BaseChecklistsProvider
 from checklisting.serializer import BaseSerializer
@@ -18,5 +17,8 @@ class ChecklistHttpHandler(object):
 
 class WebRunner(BaseRunner):
 
-    def run(self, configuration: Dict[str, Any], checklist_provider: BaseChecklistsProvider, logger: Logger):
+    def __init__(self, addr: str, port: int) -> None:
         raise RuntimeError(ERROR_MESSAGE)
+
+    def run(self, checklists_provider: BaseChecklistsProvider) -> None:
+        pass
