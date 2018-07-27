@@ -69,3 +69,4 @@ docs/_build
 
 # IDE
 .history
+.vscode/tags
