@@ -1,28 +1,23 @@
 import io
 import sys
-from abc import ABC, abstractmethod
 from pathlib import PurePath
+from typing import Generic, TypeVar, Union
+
+from checklisting.parser import BaseParser
+
+_R = TypeVar('R')
 
 
-class BaseConfigurationLoader(ABC):
+class ConfigurationLoader(Generic[_R]):
 
-    @abstractmethod
-    def load_configuration(self) -> io.BufferedIOBase:
-        pass
-
-
-class FileConfigurationLoader(BaseConfigurationLoader):
-
-    def __init__(self, path: PurePath) -> None:
+    def __init__(self, parser: BaseParser[_R]) -> None:
         super().__init__()
-        self._path = path
+        self._parser = parser
 
-    def load_configuration(self) -> io.BufferedIOBase:
-        with open(self._path, 'r') as stream:
-            return io.StringIO("\n".join(stream.readlines()))
-
-
-class StdinConfigurationLoader(BaseConfigurationLoader):
-
-    def load_configuration(self) -> io.BufferedIOBase:
-        return sys.stdin
+    def load(self, source: Union[str, PurePath, io.BufferedIOBase, None] = None) -> _R:
+        if not source:
+            return self._parser.load(sys.stdin)
+        if isinstance(source, io.BufferedIOBase):
+            return self._parser.load(source)
+        with open(source, 'r') as stream:
+            return self._parser.load(stream)
