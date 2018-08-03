@@ -1,11 +1,11 @@
 from abc import ABC, abstractmethod
 from enum import Enum
 from pathlib import PurePath
-from typing import Any, Dict, Generic, Iterator, NewType, TypeVar, Union
+from typing import Any, Dict, Generic, Iterator, NewType, TypeVar
 
 from checklisting.provider import BaseChecklistsProvider
 
-_C = TypeVar('C')
+_C = TypeVar('_C')
 
 
 class ChecklistLoaderSourceType(Enum):
@@ -18,7 +18,7 @@ class ChecklistLoaderSourceType(Enum):
     def ofString(cls, name: str) -> 'ChecklistLoaderSourceType':
         return cls[name.upper()]
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
 
@@ -30,7 +30,7 @@ class ChecklistLoaderSourceEntry(object):
 
     # TODO: unqute return type once py36 compatibility is dropped
     @staticmethod
-    def ofDict(dictionary: Dict[str, Union[PurePath, ChecklistLoaderSourceType]]) -> 'ChecklistLoaderEntry':
+    def ofDict(dictionary: Dict[str, str]) -> 'ChecklistLoaderSourceEntry':
         return ChecklistLoaderSourceEntry(
             ChecklistLoaderSourceType.ofString(dictionary['type']), PurePath(dictionary['path']))
 
