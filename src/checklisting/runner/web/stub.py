@@ -5,7 +5,7 @@ from checklisting.serializer import BaseSerializer
 
 from .. import BaseRunner
 
-ERROR_MESSAGE = 'Please install [web] extras: pip install checklisting[web]'
+ERROR_MESSAGE = 'Please install [web] extras to use checklisting.runner.web: pip install checklisting[web]'
 
 
 class ChecklistHttpHandler(object):
