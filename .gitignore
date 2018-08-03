@@ -45,6 +45,9 @@ htmlcov
 *.iml
 *.komodoproject
 
+# linting
+.mypy_cache
+
 # Complexity
 output/*.html
 output/*/index.html

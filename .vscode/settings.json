@@ -7,6 +7,9 @@
     "python.linting.flake8Enabled": true,
     "python.linting.pylintEnabled": false,
     "python.linting.lintOnSave": true,
+    "python.linting.flake8Args": [
+        "--mypy-config=${workspaceRoot}/setup.cfg"
+    ],
     "python.formatting.provider": "yapf",
     "python.formatting.yapfArgs": [
         "--style",
