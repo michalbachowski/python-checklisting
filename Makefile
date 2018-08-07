@@ -18,4 +18,7 @@ webserver:
 cli:
 	PYTHONPATH=src/:$(PYTHONPATH) python3 -mchecklisting cli tests/fixtures/sample_checklists/simple_config.yml
 
-.PHONY: clean zipapp sdist cli server server
+tests:
+	$(shell cat .env) python3 -B -mpytest --cov=checklisting --cov-report=term-missing tests/src/
+
+.PHONY: clean zipapp sdist cli server server tests
