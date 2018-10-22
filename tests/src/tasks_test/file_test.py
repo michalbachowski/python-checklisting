@@ -1,12 +1,15 @@
-import unittest
-import mock
 import pathlib
+import unittest
+
 import asynctest
-from checklisting.testing import CheckType, CheckGenerator
+import mock
+
 from checklisting.result import BaseTaskResult
 from checklisting.result.builder import MultiTaskResultBuilder
 from checklisting.result.status import TaskResultStatus
-from checklisting.tasks.file import FileContentTask, BaseFileContentValidator, PerLineFileContentValidator, BaseLineValidator
+from checklisting.tasks.file import (BaseFileContentValidator, BaseLineValidator, FileContentTask,
+                                     PerLineFileContentValidator)
+from checklisting.testing import CheckGenerator, CheckType
 
 
 class FileContentTaskTest(asynctest.TestCase):
