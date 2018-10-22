@@ -1,10 +1,18 @@
-import mock
-from pathlib import PurePath
 import os
+from pathlib import PurePath
+
 import asynctest
-from checklisting.result import TaskResult
+import mock
+
+from checklisting.result import BaseTaskResult, TaskResult
 from checklisting.result.status import TaskResultStatus
-from checklisting.tasks.subprocess import SubprocessTask, BaseSubprocessResultValidator
+from checklisting.tasks.subprocess import BaseSubprocessResultValidator, SubprocessTask
+
+
+class ExceptionRaisingValidator(BaseSubprocessResultValidator):
+
+    def _validate(self, stdout: str, stderr: str, exit_code: int) -> BaseTaskResult:
+        raise RuntimeError("test")
 
 
 class SubprocessTaskTest(asynctest.TestCase):
@@ -32,3 +40,10 @@ class SubprocessTaskTest(asynctest.TestCase):
         self.assertEqual(result.status, TaskResultStatus.SUCCESS)
         self.assertEqual(result.message, 'mock_output')
         self.validator.validate.assert_called_once_with(b'out', b'err', 42)
+
+    async def test_on_validation_error_returns_failure(self):
+        task = SubprocessTask([self.process_path], ExceptionRaisingValidator())
+
+        result = await task.execute()
+        self.assertEqual(result.status, TaskResultStatus.UNKNOWN)
+        self.assertTrue(result.message.endswith("Exception:\ntest"))
