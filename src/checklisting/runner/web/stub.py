@@ -1,5 +1,6 @@
 from typing import Optional
 
+from checklisting.extras import import_module
 from checklisting.provider import BaseChecklistsProvider
 from checklisting.serializer import BaseSerializer
 
@@ -12,13 +13,13 @@ class ChecklistHttpHandler(object):
 
     def __init__(self, checklist_provider: BaseChecklistsProvider,
                  serializer: Optional[BaseSerializer] = None) -> None:
-        raise RuntimeError(ERROR_MESSAGE)
+        import_module('aiohttp')
 
 
 class WebRunner(BaseRunner):
 
     def __init__(self, addr: str, port: int) -> None:
-        raise RuntimeError(ERROR_MESSAGE)
+        import_module('aiohttp')
 
     def run(self, checklists_provider: BaseChecklistsProvider) -> None:
         pass

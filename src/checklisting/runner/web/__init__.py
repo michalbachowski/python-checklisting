@@ -1,6 +1,6 @@
-try:
-    import aiohttp  # noqa: F401
-except ImportError:
+from checklisting.extras import has_module
+
+if has_module('aiohttp'):
     from .stub import WebRunner, ChecklistHttpHandler
 else:
     from .impl import WebRunner, ChecklistHttpHandler
