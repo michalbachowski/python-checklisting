@@ -59,6 +59,9 @@ setup(
         'web': [
             'aiohttp==3.3.2',
         ],
+        'system': [
+            'psutil==5.4.6'
+        ]
     },
     entry_points={
         'console_scripts': [
