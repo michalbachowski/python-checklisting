@@ -17,3 +17,6 @@ class CheckGenerator(object):
 
     def __eq__(self, other):
         return list(other) == self._expected
+
+    def __repr__(self):
+        return f'<generator object of: {self._expected}>'
