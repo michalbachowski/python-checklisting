@@ -1,3 +1,8 @@
+
+import asyncio
+from typing import Awaitable, Callable, Tuple
+
+
 class CheckType(object):
 
     def __init__(self, cls):
@@ -20,3 +25,20 @@ class CheckGenerator(object):
 
     def __repr__(self):
         return f'<generator object of: {self._expected}>'
+
+
+async def _echo(reader: asyncio.StreamReader) -> bytes:
+    return await reader.read(100)
+
+
+async def setup_tcp_server(loop: asyncio.AbstractEventLoop,
+                           response_strategy: Callable[[asyncio.StreamReader], Awaitable[bytes]] = _echo,
+                           host: str = '127.0.0.1') -> Tuple[str, int]:
+
+        async def _handler(reader, writer):
+            data = await response_strategy(reader)
+            writer.write(data)
+            await writer.drain()
+            writer.close()
+        server = await asyncio.ensure_future(asyncio.start_server(_handler, host), loop=loop)
+        return (host, server.sockets[0].getsockname()[1])

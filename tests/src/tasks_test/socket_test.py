@@ -1,13 +1,12 @@
-import asyncio
 import unittest
-from typing import Any, Iterator, List, Optional, Tuple
+from typing import Iterator, List, Optional, Tuple
 
 import asynctest
-import mock
 
 from checklisting.result import BaseTaskResult, TaskResult
 from checklisting.result.status import TaskResultStatus
 from checklisting.tasks.socket import BaseSocketTaskResponseValidator, SimpleSocketTaskResponseValidator, SocketTask
+from checklisting.testing import setup_tcp_server
 
 
 class StubSocketTaskResponseValidator(BaseSocketTaskResponseValidator):
@@ -64,9 +63,7 @@ class SocketTaskTest(asynctest.TestCase):
         pass
 
     async def test_simple_tcp_integration(self) -> None:
-        host = '127.0.0.1'
-        server = await asyncio.ensure_future(asyncio.start_server(handle_tcp_echo, host), loop=self.loop)
-        port = server.sockets[0].getsockname()[1]
+        (host, port) = await setup_tcp_server(self.loop)
 
         task = SocketTask(b'test_request', host, port)
         result = await task.execute()
@@ -79,19 +76,10 @@ class SocketTaskTest(asynctest.TestCase):
         self.assertEqual(sub_result.message, 'test_request')
 
     async def test_multiline_tcp_integration(self) -> None:
-        host = '127.0.0.1'
-        server = await asyncio.ensure_future(asyncio.start_server(handle_tcp_echo, host), loop=self.loop)
-        port = server.sockets[0].getsockname()[1]
+        (host, port) = await setup_tcp_server(self.loop)
 
         task = SocketTask(b'line1\nline2\nline3', host, port)
         result = await task.execute()
 
         self.assertEqual(result.status, TaskResultStatus.INFO)
         self.assertEqual(len(result.results), 3)
-
-
-async def handle_tcp_echo(reader, writer):
-    data = await reader.read(100)
-    writer.write(data)
-    await writer.drain()
-    writer.close()
