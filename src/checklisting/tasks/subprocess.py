@@ -1,9 +1,10 @@
 from abc import ABC, abstractmethod
-from asyncio.subprocess import create_subprocess_exec, PIPE
+from asyncio.subprocess import PIPE, create_subprocess_exec
 from typing import Iterable
-from checklisting.task import BaseTask
+
 from checklisting.result import BaseTaskResult, TaskResult
 from checklisting.result.status import TaskResultStatus
+from checklisting.task import BaseTask
 
 
 class BaseSubprocessResultValidator(ABC):
@@ -14,7 +15,8 @@ class BaseSubprocessResultValidator(ABC):
         except Exception as e:
             return TaskResult(
                 TaskResultStatus.UNKNOWN,
-                f'Could not parse subprocess result. Details:\n\nstdout:\n{stdout}\n\nstderr:\n{stderr}\n\nexit_code: {exit_code}\n\nException:\n{e}'
+                f'Could not parse subprocess result. Details:\n\nstdout:\n{stdout}\n\nstderr:\n{stderr}' +
+                f'\n\nexit_code: {exit_code}\n\nException:\n{e}'
             )
 
     @abstractmethod
@@ -29,7 +31,7 @@ class SubprocessTask(BaseTask):
         self._cmd = command
         self._subprocess_result_validator = subprocess_result_validator
 
-    async def _execute(self):
+    async def _execute(self) -> BaseTaskResult:
         process = await create_subprocess_exec(*self._cmd, stdout=PIPE, stderr=PIPE)
         (stdout, stderr) = await process.communicate()
 
