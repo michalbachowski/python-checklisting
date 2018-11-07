@@ -5,7 +5,7 @@ from typing import Any, Dict, Generic, Iterator, NewType, TypeVar
 
 from checklisting.provider import BaseChecklistsProvider
 
-_C = TypeVar('_C')
+C = TypeVar('C')
 
 
 class ChecklistLoaderSourceType(Enum):
@@ -46,7 +46,7 @@ class ChecklistLoaderSourceEntry(object):
 BaseChecklistSourceConfiguration = NewType('BaseChecklistSourceConfiguration', Dict[str, Any])
 
 
-class BaseChecklistsLoader(Generic[_C], ABC):
+class BaseChecklistsLoader(Generic[C], ABC):
 
     @abstractmethod
     def load_checklists(self, entries: Iterator[ChecklistLoaderSourceEntry],

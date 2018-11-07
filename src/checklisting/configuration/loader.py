@@ -5,16 +5,16 @@ from typing import Generic, TypeVar, Union
 
 from checklisting.parser import BaseParser
 
-_R = TypeVar('R')
+R = TypeVar('R')
 
 
-class ConfigurationLoader(Generic[_R]):
+class ConfigurationLoader(Generic[R]):
 
-    def __init__(self, parser: BaseParser[_R]) -> None:
+    def __init__(self, parser: BaseParser[R]) -> None:
         super().__init__()
         self._parser = parser
 
-    def load(self, source: Union[str, PurePath, io.BufferedIOBase, None] = None) -> _R:
+    def load(self, source: Union[str, PurePath, io.BufferedIOBase, None] = None) -> R:
         if not source:
             return self._parser.load(sys.stdin)
         if isinstance(source, io.BufferedIOBase):

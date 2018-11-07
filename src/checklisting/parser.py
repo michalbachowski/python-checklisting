@@ -4,17 +4,17 @@ from typing import Generic, TypeVar
 
 import yaml
 
-_R = TypeVar('R')
+R = TypeVar('R')
 
 
-class BaseParser(Generic[_R]):
+class BaseParser(Generic[R]):
 
     @abstractmethod
-    def load(self, stream: io.BufferedIOBase) -> _R:
+    def load(self, stream: io.BufferedIOBase) -> R:
         pass
 
 
-class YamlParser(BaseParser[_R]):
+class YamlParser(BaseParser[R]):
 
-    def load(self, stream: io.BufferedIOBase) -> _R:
+    def load(self, stream: io.BufferedIOBase) -> R:
         return yaml.load(stream)

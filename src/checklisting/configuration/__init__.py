@@ -1,11 +1,11 @@
 from abc import ABC, abstractmethod
 from typing import Generic, TypeVar
 
-_R = TypeVar('R')
+R = TypeVar('R')
 
 
-class BaseRawConfiguration(Generic[_R], ABC):
+class BaseRawConfiguration(Generic[R], ABC):
 
     @abstractmethod
-    def raw_config(self) -> _R:
+    def raw_config(self) -> R:
         pass
