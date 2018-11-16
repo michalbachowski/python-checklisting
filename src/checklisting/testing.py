@@ -42,3 +42,4 @@ async def setup_tcp_server(loop: asyncio.AbstractEventLoop,
             writer.close()
         server = await asyncio.ensure_future(asyncio.start_server(_handler, host), loop=loop)
         return (host, server.sockets[0].getsockname()[1])
+

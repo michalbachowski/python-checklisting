@@ -1,9 +1,10 @@
-from abc import abstractmethod
-from typing import Container, Callable
+from abc import ABC, abstractmethod
+from typing import Container
+
 from checklisting.task import Checklist
 
 
-class BaseChecklistsFilterPredicate(Callable[[Checklist], bool]):
+class BaseChecklistsFilterPredicate(ABC):
 
     @abstractmethod
     def __call__(self, checklist: Checklist) -> bool:
