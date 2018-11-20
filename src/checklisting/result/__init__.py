@@ -45,7 +45,7 @@ class MultiTaskResult(TaskResult):
 
     def __init__(self, status: TaskResultStatus, message: str, task_results: Iterable[BaseTaskResult]) -> None:
         super().__init__(status, message)
-        self._results = task_results
+        self._results = list(task_results)
 
     @property
     def results(self) -> Iterable[BaseTaskResult]:

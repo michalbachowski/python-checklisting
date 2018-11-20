@@ -1,8 +1,9 @@
 import unittest
-import mock
-from checklisting.result import TaskResult, MultiTaskResult
+from typing import Any, Iterable, Mapping, Union
+
+from checklisting.result import BaseTaskResult, MultiTaskResult, TaskResult
 from checklisting.result.status import TaskResultStatus
-from checklisting.serializer.json import JsonSerializer
+from checklisting.serializer.json import JsonDeserializer, JsonSerializer, task_result_decoder
 
 
 class JsonSerializerTest(unittest.TestCase):
@@ -62,3 +63,67 @@ class JsonSerializerTest(unittest.TestCase):
 
         with self.assertRaises(TypeError):
             self.serializer.dumps(UnsupportedClass())
+
+
+class JsonDeserializerTest(unittest.TestCase):
+
+    def setUp(self) -> None:
+        self.serializer = JsonSerializer()
+        self.deserializer = JsonDeserializer()
+
+    def _do_test(self, results: BaseTaskResult) -> None:
+        result_string = self.serializer.dumps(results)
+
+        deserialized_result = self.deserializer.loads(result_string)
+
+        self.assertEqual(deserialized_result, results)
+
+    def test_valid_json_result_test(self) -> None:
+        self._do_test(TaskResult(TaskResultStatus.INFO, "test message"))
+
+    def test_valid_json_simple_multi_result_test(self) -> None:
+        self._do_test(
+            MultiTaskResult(TaskResultStatus.FAILURE, "failure message", [
+                TaskResult(TaskResultStatus.INFO, "test message"),
+            ]))
+
+    def test_valid_json_nested_multi_result_test(self) -> None:
+        self._do_test(
+            MultiTaskResult(TaskResultStatus.FAILURE, "failure message", [
+                TaskResult(TaskResultStatus.INFO, "test message"),
+                MultiTaskResult(TaskResultStatus.SUCCESS, "success message", [
+                    TaskResult(TaskResultStatus.WARNING, "warning message"),
+                    MultiTaskResult(TaskResultStatus.UNKNOWN, "unknown message", [
+                        TaskResult(TaskResultStatus.FAILURE, "failure 2 message")
+                    ])
+                ])
+            ]))
+
+    def test_missing_message(self) -> None:
+        input_dict = dict(a=1, status='FAILURE')
+        serialized = self.serializer.dumps(input_dict)
+        deserialized = self.deserializer.loads(serialized)
+
+        self.assertDictEqual(input_dict, deserialized)
+
+    def test_missing_status(self) -> None:
+        input_dict = dict(a=1, message='FAILURE')
+        serialized = self.serializer.dumps(input_dict)
+        deserialized = self.deserializer.loads(serialized)
+
+        self.assertDictEqual(input_dict, deserialized)
+
+    def test_missing_all_but_results(self) -> None:
+        input_dict = dict(a=1, results='foo')
+        serialized = self.serializer.dumps(input_dict)
+        deserialized = self.deserializer.loads(serialized)
+
+        self.assertDictEqual(input_dict, deserialized)
+
+    def test_valid_task_result_with_non_iterable_results_returns_TaskResult(self) -> None:
+        input_results = TaskResult(TaskResultStatus.FAILURE, 'test message')
+        input_dict = dict(status=input_results.status, message=input_results.message, results=1)
+        serialized = self.serializer.dumps(input_dict)
+        deserialized = self.deserializer.loads(serialized)
+
+        self.assertEqual(input_results, deserialized)
