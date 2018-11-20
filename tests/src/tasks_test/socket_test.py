@@ -5,7 +5,9 @@ import asynctest
 
 from checklisting.result import BaseTaskResult, TaskResult
 from checklisting.result.status import TaskResultStatus
-from checklisting.tasks.socket import BaseSocketTaskResponseValidator, SimpleSocketTaskResponseValidator, SocketTask
+from checklisting.tasks.socket import (BaseSocketTaskResponseValidator,
+                                       SimpleSocketTaskResponseValidator,
+                                       SocketTask)
 from checklisting.testing import setup_tcp_server
 
 
@@ -58,9 +60,6 @@ class SimpleSocketTaskResponseValidatorTest(unittest.TestCase):
 
 
 class SocketTaskTest(asynctest.TestCase):
-
-    def setUp(self) -> None:
-        pass
 
     async def test_simple_tcp_integration(self) -> None:
         (host, port) = await setup_tcp_server(self.loop)
