@@ -20,7 +20,6 @@ def task_result_encoder(obj):
 
 def task_result_decoder(obj):
     if 'status' in obj and 'message' in obj:
-        print(obj)
         status = TaskResultStatus[obj['status']]
         message = obj['message']
 

@@ -107,7 +107,6 @@ class CPUInfoTask(BaseTask):
         try:
             logical_cpu_count = psutil.cpu_count(logical=True)
             if logical_cpu_count is None:
-                print('fpoo')
                 raise RuntimeError('Could not determine number of logical CPUs')
 
             physical_cpu_count = psutil.cpu_count(logical=False)
