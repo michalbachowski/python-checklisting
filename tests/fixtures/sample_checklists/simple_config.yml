@@ -3,8 +3,6 @@ web:
     port: 8080
     addr: 127.0.0.1
 
-debug: True
-
 checklists:
   sources:
     - type: FILE
