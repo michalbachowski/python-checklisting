@@ -1,14 +1,15 @@
 from abc import abstractmethod
 from typing import Any, Dict, Iterable, Iterator
 
+from checklisting.configuration import BaseRawConfiguration
+from checklisting.provider import (BaseChecklistsProvider,
+                                   StaticChecklistsProvider)
+from checklisting.task import Checklist
 from pyspd import MountPoint
 from pyspd.loader import LoaderDir, LoaderFile, LoaderModule
 
-from checklisting.configuration import BaseRawConfiguration
-from checklisting.provider import BaseChecklistsProvider, StaticChecklistsProvider
-from checklisting.task import Checklist
-
-from . import BaseChecklistsLoader, ChecklistLoaderSourceEntry, ChecklistLoaderSourceType
+from . import (BaseChecklistsLoader, ChecklistLoaderSourceEntry,
+               ChecklistLoaderSourceType)
 
 
 class PySPDChecklistProvider(metaclass=MountPoint):
