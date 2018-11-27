@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
+from itertools import chain
 from typing import Iterable, Union
 
 from .status import TaskResultStatus
@@ -23,6 +24,9 @@ class BaseTaskResult(ABC):
 
     def __eq__(self, other: BaseTaskResult) -> bool:
         return self.status == other.status and self.message == other.message
+
+    def __hash__(self) -> int:
+        return hash('\n'.join([str(self.status), self.message]))
 
 
 class TaskResult(BaseTaskResult):
@@ -57,3 +61,6 @@ class MultiTaskResult(TaskResult):
         if not isinstance(other, MultiTaskResult):
             return True
         return self._results == other.results
+
+    def __hash__(self) -> int:
+        return hash('\n'.join(chain([str(super().__hash__())], map(str, map(hash, self._results)))))
