@@ -23,3 +23,4 @@ class WebRunner(BaseRunner):
 
     def run(self, checklists_provider: BaseChecklistsProvider) -> None:
         pass
+

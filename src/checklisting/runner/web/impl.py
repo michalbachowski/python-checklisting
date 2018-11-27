@@ -52,3 +52,4 @@ class WebRunner(BaseRunner):
         except KeyboardInterrupt:
             _logger.info('shutting down')
             pass
+
