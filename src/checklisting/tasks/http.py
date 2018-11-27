@@ -60,5 +60,6 @@ class HttpTask(BaseTask):
         return self._client_session
 
     async def _execute(self) -> BaseTaskResult:
-        async with self._session.request(self._method.value, self._url, **self._kwargs) as resp:
-            return await self._validator.validate(resp)
+        async with self._session as session:
+            async with session.request(self._method.value, self._url, **self._kwargs) as resp:
+                return await self._validator.validate(resp)
