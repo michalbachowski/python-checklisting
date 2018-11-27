@@ -5,7 +5,7 @@ from typing import Dict
 
 from checklisting.runner import BaseRunnerFactory
 from checklisting.runner.cli import CliRunnerFactory
-from checklisting.runner.external import ExternalRunnerFactory
+from checklisting.runner.external import ExternalChecklistRunnerFactory
 from checklisting.runner.webserver import WebserverRunnerFactory
 
 
@@ -48,6 +48,6 @@ def main() -> None:
     dispatcher = ChecklistingDispatcher(
         WebserverRunnerFactory(),
         CliRunnerFactory(),
-        ExternalRunnerFactory()
+        ExternalChecklistRunnerFactory()
     )
     dispatcher.run()

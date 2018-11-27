@@ -18,6 +18,9 @@ webserver:
 cli:
 	PYTHONPATH=src/:$(PYTHONPATH) python3 -mchecklisting cli --config=tests/fixtures/sample_checklists/simple_config.yml
 
+call_local:
+	PYTHONPATH=src/:$(PYTHONPATH) python3 -mchecklisting external -s http://127.0.0.1:8080
+
 tests:
 	$(shell cat .env) python3 -B -mpytest --cov=checklisting --cov-report=term-missing tests/src/
 
