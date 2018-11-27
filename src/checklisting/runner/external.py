@@ -2,6 +2,7 @@ import argparse
 from itertools import chain
 from typing import Iterator
 
+from checklisting.extras import import_module
 from checklisting.provider import StaticChecklistsProvider
 from checklisting.task import Checklist
 from checklisting.tasks.external import ExternalChecklistTask
@@ -9,13 +10,14 @@ from checklisting.tasks.external import ExternalChecklistTask
 from . import BaseRunner, BaseRunnerFactory
 from .cli import CliRunner
 
+yarl = import_module('yarl')
+
 
 class ExternalChecklistRunner(CliRunner):
 
-    def __init__(self, sources: Iterator[str]) -> None:
+    def __init__(self, sources: Iterator[yarl.URL]) -> None:
         super().__init__(
-            StaticChecklistsProvider([
-                Checklist('external', (ExternalChecklistTask(source) for source in sources))]))
+            StaticChecklistsProvider([Checklist('external', (ExternalChecklistTask(source) for source in sources))]))
 
 
 class ExternalChecklistRunnerFactory(BaseRunnerFactory):
@@ -32,12 +34,10 @@ class ExternalChecklistRunnerFactory(BaseRunnerFactory):
             raise RuntimeError('Please provide external sources to checklist [-s | --source | --sources]')
 
         sources = list(
-            filter(
-                None,
-                chain.from_iterable(
-                    filter(
-                        None,
-                        map(
-                            lambda item: item.split(','),
-                            chain.from_iterable(args.sources))))))
+            map(
+                yarl.URL,
+                filter(
+                    None,
+                    chain.from_iterable(
+                        filter(None, map(lambda item: item.split(','), chain.from_iterable(args.sources)))))))
         return ExternalChecklistRunner(sources)
