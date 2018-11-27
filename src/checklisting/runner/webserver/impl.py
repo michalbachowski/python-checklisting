@@ -1,6 +1,6 @@
 import asyncio
 from logging import getLogger
-from typing import Optional
+from typing import Any, Dict, Optional
 
 from aiohttp import web
 
@@ -10,6 +10,7 @@ from checklisting.serializer import BaseSerializer
 from checklisting.serializer.json import JsonSerializer
 
 from .. import BaseRunner
+from ..cli import CliRunnerFactory
 
 _logger = getLogger('checklisting.runner.web')
 
@@ -31,15 +32,16 @@ class ChecklistHttpHandler(object):
         return web.Response(body=self._serializer.dumps(checklist_results), content_type='application/json')
 
 
-class WebRunner(BaseRunner):
+class WebserverRunner(BaseRunner):
 
-    def __init__(self, addr: str, port: int) -> None:
+    def __init__(self, addr: str, port: int, checklists_provider: BaseChecklistsProvider) -> None:
         super().__init__()
         self._addr = addr
         self._port = port
+        self._checklists_provider = checklists_provider
 
-    def run(self, checklists_provider: BaseChecklistsProvider) -> None:
-        handler = ChecklistHttpHandler(checklists_provider)
+    def run(self) -> None:
+        handler = ChecklistHttpHandler(self._checklists_provider)
         app = web.Application()
         app.router.add_route('GET', '/', handler)
 
@@ -53,3 +55,11 @@ class WebRunner(BaseRunner):
             _logger.info('shutting down')
             pass
 
+
+class WebserverRunnerFactory(CliRunnerFactory):
+
+    def _provide(self, raw_configuration: Dict[str, Any]) -> BaseRunner:
+        config = raw_configuration.get('web', {}).get('server', {})
+        port = int(config.get('port', 8080))
+        addr = config.get('addr', '127.0.0.1')
+        return WebserverRunner(addr, port, self._load_checklist_provider(raw_configuration))

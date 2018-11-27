@@ -13,10 +13,10 @@ sdist:
 	python setup.py clean --all sdist bdist_wheel
 
 webserver:
-	PYTHONPATH=src/:$(PYTHONPATH) python3 -mchecklisting webserver tests/fixtures/sample_checklists/simple_config.yml
+	PYTHONPATH=src/:$(PYTHONPATH) python3 -mchecklisting webserver --config=tests/fixtures/sample_checklists/simple_config.yml
 
 cli:
-	PYTHONPATH=src/:$(PYTHONPATH) python3 -mchecklisting cli tests/fixtures/sample_checklists/simple_config.yml
+	PYTHONPATH=src/:$(PYTHONPATH) python3 -mchecklisting cli --config=tests/fixtures/sample_checklists/simple_config.yml
 
 tests:
 	$(shell cat .env) python3 -B -mpytest --cov=checklisting --cov-report=term-missing tests/src/
