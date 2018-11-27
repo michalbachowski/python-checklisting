@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from abc import ABC, abstractmethod
 from enum import Enum
 from pathlib import PurePath
@@ -13,9 +15,8 @@ class ChecklistLoaderSourceType(Enum):
     DIRECTORY = 'directory'
     MODULE = 'module'
 
-    # TODO: unqute return type once py36 compatibility is dropped
     @classmethod
-    def ofString(cls, name: str) -> 'ChecklistLoaderSourceType':
+    def ofString(cls, name: str) -> ChecklistLoaderSourceType:
         return cls[name.upper()]
 
     def __str__(self) -> str:
@@ -28,9 +29,8 @@ class ChecklistLoaderSourceEntry(object):
         self._source = source
         self._path = path
 
-    # TODO: unqute return type once py36 compatibility is dropped
     @staticmethod
-    def ofDict(dictionary: Dict[str, str]) -> 'ChecklistLoaderSourceEntry':
+    def ofDict(dictionary: Dict[str, str]) -> ChecklistLoaderSourceEntry:
         return ChecklistLoaderSourceEntry(
             ChecklistLoaderSourceType.ofString(dictionary['type']), PurePath(dictionary['path']))
 
@@ -52,3 +52,4 @@ class BaseChecklistsLoader(Generic[C], ABC):
     def load_checklists(self, entries: Iterator[ChecklistLoaderSourceEntry],
                         configuration: BaseChecklistSourceConfiguration) -> BaseChecklistsProvider:
         pass
+
