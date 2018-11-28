@@ -53,13 +53,7 @@ class HttpTask(BaseTask):
         self._client_session = None
         self._validator = validator or SimpleHttpTaskResponseValidator()
 
-    @property
-    def _session(self) -> aiohttp.ClientSession:
-        if self._client_session is None:
-            self._client_session = aiohttp.ClientSession()
-        return self._client_session
-
     async def _execute(self) -> BaseTaskResult:
-        async with self._session as session:
+        async with aiohttp.ClientSession() as session:
             async with session.request(self._method.value, self._url, **self._kwargs) as resp:
                 return await self._validator.validate(resp)

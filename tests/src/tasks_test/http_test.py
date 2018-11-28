@@ -51,7 +51,7 @@ Connection: close
         self.assertEqual(result.status, TaskResultStatus.FAILURE)
         self.assertEqual(result.message, f'Request to [{url}] failed')
 
-    async def test_client_session_is_reused(self):
+    async def test_might_be_executed_multiple_times(self):
         response = b'''
 HTTP/1.1 200 OK
 Content-Length: 0
