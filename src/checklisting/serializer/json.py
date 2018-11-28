@@ -40,3 +40,4 @@ class JsonDeserializer(BaseDeserializer):
 
     def loads(self, result: str) -> BaseTaskResult:
         return json.loads(result, object_hook=task_result_decoder)
+

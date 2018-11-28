@@ -29,7 +29,7 @@ class ChecklistHttpHandler(object):
         for checklist_results in checklists_results:
             self._logging_writer.write(checklist_results)
 
-        return web.Response(body=self._serializer.dumps(checklist_results), content_type='application/json')
+        return web.Response(body=self._serializer.dumps(checklists_results), content_type='application/json')
 
 
 class WebserverRunner(BaseRunner):
