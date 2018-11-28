@@ -61,3 +61,4 @@ class ZookeeperTask(BaseTask):
     async def _execute(self) -> BaseTaskResult:
         return self._result_builder.of_results(await asyncio.gather(self._ruok_task.execute(),
                                                                     self._mntr_task.execute()))
+
