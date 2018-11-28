@@ -36,7 +36,7 @@ class ZookeeperMntrResonseValidator(BaseSocketTaskResponseValidator):
                                  'Please add [mntr] to [4lw.commands.whitelist] property in zookeeper.conf file')
         else:
             try:
-                (key, *values) = filter(None, line.split(' '))
+                (key, *values) = filter(None, line.split())
                 yield TaskResult(TaskResultStatus.INFO, f'[{key}]=[{" ".join(values)}]')
             except ValueError:
                 yield TaskResult(TaskResultStatus.WARNING, f'Line [{line}] is not parseable')
