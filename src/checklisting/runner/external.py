@@ -13,6 +13,13 @@ from .cli import CliRunner
 yarl = import_module('yarl')
 
 
+def _fix_url(source: str) -> str:
+    if not source.startswith('http'):
+        return f'http://{source}'
+    else:
+        return source
+
+
 class ExternalChecklistRunner(CliRunner):
 
     def __init__(self, sources: Iterator[yarl.URL]) -> None:
@@ -36,8 +43,10 @@ class ExternalChecklistRunnerFactory(BaseRunnerFactory):
         sources = list(
             map(
                 yarl.URL,
-                filter(
-                    None,
-                    chain.from_iterable(
-                        filter(None, map(lambda item: item.split(','), chain.from_iterable(args.sources)))))))
+                map(
+                    _fix_url,
+                    filter(
+                        None,
+                        chain.from_iterable(
+                            filter(None, map(lambda item: item.split(','), chain.from_iterable(args.sources))))))))
         return ExternalChecklistRunner(sources)
