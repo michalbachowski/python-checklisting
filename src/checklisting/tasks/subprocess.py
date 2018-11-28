@@ -28,13 +28,18 @@ class BaseSubprocessResultValidator(ABC):
 
 class SubprocessTask(BaseTask):
 
-    def __init__(self, command: Iterable[str], subprocess_result_validator: BaseSubprocessResultValidator) -> None:
+    def __init__(self, command: Iterable[str], subprocess_result_validator: BaseSubprocessResultValidator,
+                 charset: str = 'UTF-8') -> None:
         super().__init__()
         self._cmd = command
         self._subprocess_result_validator = subprocess_result_validator
+        self._charset = charset
 
     async def _execute(self) -> BaseTaskResult:
         process = await create_subprocess_exec(*self._cmd, stdout=PIPE, stderr=PIPE)
         (stdout, stderr) = await process.communicate()
 
-        return self._subprocess_result_validator.validate(stdout, stderr, process.returncode)
+        return self._subprocess_result_validator.validate(
+            stdout.decode(self._charset),
+            stderr.decode(self._charset),
+            process.returncode)
