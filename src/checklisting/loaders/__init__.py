@@ -52,4 +52,3 @@ class BaseChecklistsLoader(Generic[C], ABC):
     def load_checklists(self, entries: Iterator[ChecklistLoaderSourceEntry],
                         configuration: BaseChecklistSourceConfiguration) -> BaseChecklistsProvider:
         pass
-
