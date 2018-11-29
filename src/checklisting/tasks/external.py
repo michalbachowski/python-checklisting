@@ -3,12 +3,10 @@ from typing import Any, Optional, Union
 from checklisting.extras import import_module
 from checklisting.result import BaseTaskResult, MultiTaskResult, TaskResult
 from checklisting.result.builder import MultiTaskResultBuilder
-from checklisting.result.message.builder import \
-    PrefixedTaskResultMessageBuilder
+from checklisting.result.message.builder import PrefixedTaskResultMessageBuilder
 from checklisting.result.status import TaskResultStatus
 from checklisting.serializer.json import JsonDeserializer
-from checklisting.tasks.http import (BaseHttpTaskResponseValidator, HttpMethod,
-                                     HttpTask)
+from checklisting.tasks.http import BaseHttpTaskResponseValidator, HttpMethod, HttpTask
 
 aiohttp = import_module('aiohttp')
 yarl = import_module('yarl')
@@ -20,7 +18,7 @@ class ExternalChecklistResponseValidator(BaseHttpTaskResponseValidator):
         super().__init__()
         self._deserializer = JsonDeserializer()
         self._result_builder = result_builder or \
-            MultiTaskResultBuilder(message_builder=PrefixedTaskResultMessageBuilder(source))
+            MultiTaskResultBuilder(message_builder=PrefixedTaskResultMessageBuilder(f'IP [{source}] '))
 
     async def validate(self, response: aiohttp.ClientResponse) -> BaseTaskResult:
         if response.status == 200:
