@@ -26,6 +26,16 @@ class BaseSubprocessResultValidator(ABC):
         pass
 
 
+class InfoSubprocessResultValidator(BaseSubprocessResultValidator):
+
+    def __init__(self, prefix: str) -> None:
+        super().__init__()
+        self._prefix = prefix
+
+    def _validate(self, stdout: str, stderr: str, exit_code: int) -> BaseTaskResult:
+        return TaskResult(TaskResultStatus.INFO, f'{self._prefix}: [{stdout.strip()}]')
+
+
 class SubprocessTask(BaseTask):
 
     def __init__(self, command: Iterable[str], subprocess_result_validator: BaseSubprocessResultValidator,
